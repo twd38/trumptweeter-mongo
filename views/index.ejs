@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <script type="text/javascript">
+        //runs when the document is loaded
+      $(document).ready(
+        function() {
+          console.log("ready");
+
+          $("#searchButton").click(function() {
+            var searchString = $("#searchString").val();
+
+            console.log(searchString);
+
+            if(searchString === "") {
+              return;
+            }
+
+            $.get("http://localhost:3000/search?searchString="+searchString, function(data,status) {
+              if(data.status === "Success") {
+              $("#results").html("<h1 class = 'successMsg'>Here are your tweets!</h1>")
+
+              console.log(data.tweet)
+              $('#tweets').html(`<img id="loading" class="mx-auto" src="https://clipart.info/images/ccovers/1523212416donald-trump-head-wtf-png.png">`)
+              $("#tweets").html("")
+              for( i=0; i<Object.keys(data.tweet).length; i++){
+
+                $("#tweets").append(
+                  '<li class="list-group-item mx-auto" style="width: 1000px;">'+
+                      '<p class=" d-inline font-weight-bold"  >'+data.tweet[i].Name+'</p>'+
+                      '<p class="d-inline font-weight-light text-primary"> '+data.tweet[i].Twitter_Handle+'</p>'+
+                      '<p class="d-inline font-weight-light text-success float-right">'+data.tweet[i].Date+'</p>'+
+                    '<p >'+data.tweet[i].Tweet+'</p>'+
+                    '<div class="btn-group">'+
+                        '<a href='+data.tweet[i].tweet_URL+' target="_blank" class="btn btn-outline-primary ">'+
+                            '<i class="glyphicon glyphicon-floppy-disk" aria-hidden="true">Original Tweet</i>'+
+                        '</a>'+
+                    '</div>'+
+                    '<p class="d-inline font-weight-light text-warning float-right"> '+data.tweet[i].Agency+'</p>'+
+                    '<p class="d-inline font-weight-light text-secondary float-right"> - </p>'+
+                    '<p class="d-inline font-weight-light text-danger float-right"> '+data.tweet[i].Job+'</p>'+
+                  '</li>'
+                  )
+                }
+
+                } if(data.status === "Error") {
+                  $("#error").html('<h1 class = "errorMsg">'+data.message+'</h1>')
+                }
+              })
+            })
+
+            $("#export").click(function(e){
+              filterMethod = "none";
+              console.log("Export");
+              // const keyword = document.getElementById('topicSearch').value.toLowerCase();
+              // exportToCsv("trumptweeter.csv", filtered_tweets);
+              // var parsedTweets = parseJSONToCSVStr(filtered_tweets);
+              exportToCsvFile(data.tweet);
+
+            e.preventDefault();
+            });
+          }
+        );
+    </script>
+
+    <meta charset="utf-8">
+    <title></title>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary ">
+      <a class="navbar-brand" href="#">TrumpTweeter</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://projects.propublica.org/trump-town/" target="_blank">ProPublica <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/data"_blank"">Data</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+      <div class="containter">
+        <!--  Background-->
+          <div class="row">
+            <div class="col s12"><p></p></div>
+          </div>
+
+         <div id="top spacing">
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+              <div class="col s12 m4 l2"><p></p></div>
+          </div>
+
+          <div class="row">
+            <div class="col s12"><h1 class="text-center">Search for topics within Trump Appointees' tweets!</h1></div>
+          </div>
+          <div class="row">
+            <div class="col s12"><p></p></div>
+          </div>
+          </div>
+            <div class="col s12 m4 l2"><p></p></div>
+          </div>
+
+          <div class="row">
+            <div class="row">
+              <div class="col s12"></div>
+            </div>
+            <div class="col s12 m4 l2"><p></p></div>
+            <div class="col s12 m4 l8 text-center">
+              <div id="searchBar" class="input-group mb-3">
+                <input id="searchString" type="text" class="form-control" placeholder="Search for a topic" aria-label="Username" aria-describedby="basic-addon1">
+                <button type="button" id="searchButton" class="btn btn-primary">Search</button>
+                <div class="dropdown">
+                  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Sort by </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" id="none">Random</a>
+                    <a class="dropdown-item" href="#" id="Name">Name</a>
+                    <a class="dropdown-item" href="#" id="Date">Date</a>
+                    <a class="dropdown-item" href="#" id="Agency">Agency</a>
+                  </div>
+                  <button type="button" class="btn btn-warning" id="export">Export to CSV</button>
+
+                </div>
+              </div>
+            </div>
+            <div class="col s12 m4 l2"><p></p></div>
+          </div>
+          <div class="row"><p></p></div>
+          <div class="row"><p></p></div>
+          <div id="tweet-results">
+            <ul id="tweets" class="list-group"></ul>
+          </div>
+  </body>
+
+</html>

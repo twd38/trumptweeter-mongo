@@ -1,0 +1,10 @@
+#loading {
+		-webkit-animation: rotation 2s infinite linear;
+    -webkit-animation-duration: 1500ms;
+    height: 200px;
+    width: 250px;
+}
+
+#searchButton {
+  margin-right: 0.5em;
+}
