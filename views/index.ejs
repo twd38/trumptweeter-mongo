@@ -19,7 +19,7 @@
             console.log(dropdownMenuButton)
           })
 
-        
+
 
           $("#searchButton").click(function() {
             var searchString = $("#searchString").val();
@@ -30,7 +30,7 @@
               return;
             }
 
-            $.get("http://localhost:3000/search?searchString="+searchString, function(data,status) {
+            $.get("/search?searchString="+searchString, function(data,status) {
               if(data.status === "Success") {
               $("#results").html("<h1 class = 'successMsg'>Here are your tweets!</h1>")
 
