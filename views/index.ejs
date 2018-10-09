@@ -20,7 +20,6 @@
           })
 
 
-
           $("#searchButton").click(function() {
             var searchString = $("#searchString").val();
 
@@ -62,6 +61,12 @@
                 }
               })
             })
+            $('#searchString').keypress(function(e){
+                if(e.which == 13){//Enter key pressed
+                    $('#searchButton').click();//Trigger search button click event
+                }
+            });
+
 
 // CSV EXPORT
             $("#export").click(function(e){
