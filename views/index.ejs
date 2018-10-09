@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
     <script type="text/javascript">
+
+      // window.onload = function(){ document.getElementById("loader").style.display = "none" }
+
         //runs when the document is loaded
       $(document).ready(
         function() {
@@ -21,7 +24,6 @@
               console.log(sortBy)
               $('#searchButton').click();//Trigger search button click event
           });
-
 
           $("#searchButton").click(function() {
             var searchString = $("#searchString").val();
@@ -64,24 +66,33 @@
                 }
               })
             })
+
             $('#searchString').keypress(function(e){
                 if(e.which == 13){//Enter key pressed
                     $('#searchButton').click();//Trigger search button click event
                 }
             });
 
+            $("#export").click( function() {
+                $.get("/export", function() {
+
+                });
+            });
+
+
+
 
 // CSV EXPORT
-            $("#export").click(function(e){
-              filterMethod = "none";
-              console.log("Export");
-              // const keyword = document.getElementById('topicSearch').value.toLowerCase();
-              // exportToCsv("trumptweeter.csv", filtered_tweets);
-              // var parsedTweets = parseJSONToCSVStr(filtered_tweets);
-              exportToCsvFile(data.tweet);
-
-            e.preventDefault();
-            });
+            // $("#export").click(function(e){
+            //   filterMethod = "none";
+            //   console.log("Export");
+            //   // const keyword = document.getElementById('topicSearch').value.toLowerCase();
+            //   // exportToCsv("trumptweeter.csv", filtered_tweets);
+            //   // var parsedTweets = parseJSONToCSVStr(filtered_tweets);
+            //   exportToCsvFile(data.tweet);
+            //
+            // e.preventDefault();
+            // });
           }
         );
     </script>
@@ -171,9 +182,11 @@
           </div>
           <div class="row"><p></p></div>
           <div class="row"><p></p></div>
+
           <div id="tweet-results">
             <ul id="tweets" class="list-group"></ul>
           </div>
+
   </body>
 
 </html>
