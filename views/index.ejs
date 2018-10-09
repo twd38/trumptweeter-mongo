@@ -14,10 +14,13 @@
       $(document).ready(
         function() {
           console.log("ready");
+          var sortBy = "none"
 
-          $("#dropdown-menu").click(function() {
-            console.log(dropdownMenuButton)
-          })
+          $(".dropdown-menu li a").click( function() {
+              sortBy = $(this).text();
+              console.log(sortBy)
+              $('#searchButton').click();//Trigger search button click event
+          });
 
 
           $("#searchButton").click(function() {
@@ -29,7 +32,7 @@
               return;
             }
 
-            $.get("/search?searchString="+searchString, function(data,status) {
+            $.get("/search?searchString="+searchString+"&sortBy="+sortBy, function(data,status) {
               if(data.status === "Success") {
               $("#results").html("<h1 class = 'successMsg'>Here are your tweets!</h1>")
 
@@ -153,12 +156,12 @@
                 <button type="button" id="searchButton" class="btn btn-primary">Search</button>
                 <div class="dropdown">
                   <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Sort by </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#" id="none">Random</a>
-                    <a class="dropdown-item" href="#" id="Name">Name</a>
-                    <a class="dropdown-item" href="#" id="Date">Date</a>
-                    <a class="dropdown-item" href="#" id="Agency">Agency</a>
-                  </div>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#" id="none">Random</a></li>
+                    <li><a class="dropdown-item" href="#" id="Name">Name</a></li>
+                    <li><a class="dropdown-item" href="#" id="Date">Date</a></li>
+                    <li><a class="dropdown-item" href="#" id="Agency">Agency</a></li>
+                  </ul>
                   <button type="button" class="btn btn-warning" id="export">Export to CSV</button>
 
                 </div>

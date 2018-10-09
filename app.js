@@ -8,7 +8,6 @@ const db = mongo.MongoClient
 express.set('view engine', 'ejs')
 express.use(server.static(__dirname+'/views'))
 
-// db.connect('mongodb://localhost:27017', (err,client) => {
 db.connect(keys.mongoURI, (err,client) => {
   const database = client.db('trumptweeter');
 
@@ -20,44 +19,29 @@ db.connect(keys.mongoURI, (err,client) => {
 
   express.get('/search',(req,res) => {
     console.log('searchString: '+req.query.searchString)
-    // var selText= document.getElementById("dropdownMenuButton").value;
-    console.log('Sort By:  '+req.query.dropdownMenuButton)
+    sortBy= { "none" :1 }
 
-    var cursor = database.collection('things').find({"Tweet": {$regex : ".*"+req.query.searchString+".*"}}).sort( { "Agency": 1 } ).toArray( function(err,results){
-      // console.log(results)
+      if(req.query.sortBy == "none") {
+        sortBy= { "none" :1 }
+      }
+      if(req.query.sortBy == "random") {
+        sortBy= { "none" :1 }
+      }
+      if(req.query.sortBy == "Name") {
+        sortBy = { "Name" :1 }
+      }
+      if(req.query.sortBy == "Date") {
+        sortBy = { "Date" :1 }
+      }
+      if(req.query.sortBy == "Agency") {
+        sortBy = { "Agency" :1 }
+      }
+
+    var cursor = database.collection('things').find({"Tweet": {$regex : ".*"+req.query.searchString+".*"}}).sort( sortBy ).toArray( function(err,results){
+      console.log(sortBy)
       res.json({status:'Success', message:'found tweet', tweet:results});
     })
-
-    // res.send({status:'Success', message:'Successfully Voted'});
-    // searchDB = database.collection('things').findOne({"Tweet": {$regex : ".*"+req.query.searchString+".*"}})
-    // searchDB = database.collection('things').find().count()
-
-    // db.things.find({"Twitter_Handle":{$regex : ".*women.*"}})
-
-    // res.send({status:'Success', message:'found tweet', tweet:database.collection('things').find().count()});
-    // if(req.query.searchString != "") {
-    //     console.log(searchDB)
-    //     database.collection('things').find().count(), (err,result) => {
-    //     if(err) return process.exit(1);
-    //     res.send({status:'Success', message:'found tweet', tweet:'tweeterrrrr' });
-    //   }
-    // } else {
-    //     res.send({status:'Error', message: 'did not find tweet'});
-    // }
-
-    // if(!Tweet.includes(req.query.searchString)) {
-    //   database.collection('votes').insert({vote:req.query.vote}, (err,result) => {
-    //     if(err) return process.exit(1);
-    //
-    //     ssn.unshift(req.query.ssn) //this appends to ssn array
-    //     res.send({status:'Success', message:'Successfully Voted'});
-    //   })
-    // } else {
-    //   res.send({status:'Error', message: 'Already Voted'});
-    // }
   })
-
-
 })
 
 const PORT = process.env.PORT || 3000;
