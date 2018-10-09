@@ -20,8 +20,11 @@ db.connect(keys.mongoURI, (err,client) => {
 
   express.get('/search',(req,res) => {
     console.log('searchString: '+req.query.searchString)
-    var cursor = database.collection('things').find({"Tweet": {$regex : ".*"+req.query.searchString+".*"}}).toArray( function(err,results){
-      console.log(results)
+    // var selText= document.getElementById("dropdownMenuButton").value;
+    console.log('Sort By:  '+req.query.dropdownMenuButton)
+
+    var cursor = database.collection('things').find({"Tweet": {$regex : ".*"+req.query.searchString+".*"}}).sort( { "Agency": 1 } ).toArray( function(err,results){
+      // console.log(results)
       res.json({status:'Success', message:'found tweet', tweet:results});
     })
 
@@ -57,4 +60,5 @@ db.connect(keys.mongoURI, (err,client) => {
 
 })
 
-express.listen(3000)
+const PORT = process.env.PORT || 3000;
+express.listen(PORT);
