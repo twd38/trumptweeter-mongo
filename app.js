@@ -81,7 +81,9 @@ db.connect(keys.mongoURI, (err,client) => {
           }
           else {
               console.log('wrote output.csv');
-              res.sendFile(__dirname + '/output.csv');
+              res.sendFile(__dirname + '/output.csv', {}, (e) => {
+                console.log(e)
+              });
           }
       });
 
