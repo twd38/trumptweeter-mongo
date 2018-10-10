@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <meta charset="utf-8">
+    <title >TrumpTweeter</title>
+    <link rel="icon" href="img/trump.ico" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -73,19 +76,22 @@
                 }
             });
 
-            $("#export").click( function() {
-                $.get("/export", function() {
+            $("#export").click( () => {
+                $.get("/export", (data, status) => {
+                    let dataUri = 'data:text/csv;charset=utf-8,'+ data.csv;
+                    var searchString = $("#searchString").val();
+                    let exportFileDefaultName = 'trumptweeter_' + searchString.toUpperCase() + '.csv';
 
+                    let linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
                 });
             });
 
           }
         );
     </script>
-
-    <meta charset="utf-8">
-    <title></title>
-
   </head>
 
   <body>
@@ -138,7 +144,7 @@
           <div class="row">
             <div class="col s12"><p></p></div>
           </div>
-          </div>
+          <div>
             <div class="col s12 m4 l2"><p></p></div>
           </div>
 
@@ -160,7 +166,6 @@
                     <li><a class="dropdown-item" href="#" id="Agency">Agency</a></li>
                   </ul>
                   <button type="button" class="btn btn-warning" id="export">Export to CSV</button>
-
                 </div>
               </div>
             </div>
@@ -172,7 +177,7 @@
           <div id="tweet-results">
             <ul id="tweets" class="list-group"></ul>
           </div>
-
+        
   </body>
 
 </html>

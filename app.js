@@ -52,33 +52,15 @@ db.connect(keys.mongoURI, (err,client) => {
 
   express.get('/export', (req,res) => {
     console.log("Export to CSV");
-
     var json = searchResults;
     var jsonLength  = searchResults.length;
     var columns= ['_id','','Agency','Date','Job','Name','Tweet','Twitter_Handle','tweet_URL'];
     const opts = { columns };
-    console.log(json);
+    const csv = json2csv(json, opts);
 
-    try {
-      const csv = json2csv(json, opts);
-      console.log(csv);
-      fs.writeFile('output.csv',csv, (err) => {
-          if (err) {
-              console.log(err);
-          }
-          else {
-              console.log('wrote output.csv');
-              res.sendFile(__dirname + '/output.csv', {}, (e) => {
-                console.log(e)
-              });
-          }
-      });
-
-    } catch (err) {
-      console.error(err);
-    }
-
+    res.json({csv:csv});
   })
+
 
 
 })
