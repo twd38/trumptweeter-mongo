@@ -46,7 +46,6 @@ db.connect(keys.mongoURI, (err,client) => {
       console.log(sortBy)
       res.json({status:'Success', message:'found tweet', tweet:results});
       searchResults = results
-      console.log(searchResults)
       // searchString = searchString.push(res.query.searchString)
     })
   })
