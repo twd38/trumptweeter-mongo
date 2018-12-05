@@ -29,6 +29,8 @@
           });
 
           $("#searchButton").click(function() {
+            $('#tweets').html(`<img id="loading" class="mx-auto" src="https://clipart.info/images/ccovers/1523212416donald-trump-head-wtf-png.png">`)
+   
             var searchString = $("#searchString").val();
 
             console.log(searchString);
@@ -38,31 +40,28 @@
             }
 
             $.get("/search?searchString="+searchString+"&sortBy="+sortBy, function(data,status) {
-              if(data.status === "Success") {
-              $("#results").html("<h1 class = 'successMsg'>Here are your tweets!</h1>")
 
-              // console.log(data.tweet)
-              $('#tweets').html(`<img id="loading" class="mx-auto" src="https://clipart.info/images/ccovers/1523212416donald-trump-head-wtf-png.png">`)
+              if(data.status === "Success") {
               $("#tweets").html("")
               for( i=0; i<Object.keys(data.tweet).length; i++){
 
-                $("#tweets").append(
-                  '<li class="list-group-item mx-auto" style="width: 1000px;">'+
-                      '<p class=" d-inline font-weight-bold"  >'+data.tweet[i].Name+'</p>'+
-                      '<p class="d-inline font-weight-light text-primary"> '+data.tweet[i].Twitter_Handle+'</p>'+
-                      '<p class="d-inline font-weight-light text-success float-right">'+data.tweet[i].Date+'</p>'+
-                    '<p >'+data.tweet[i].Tweet+'</p>'+
-                    '<div class="btn-group">'+
-                        '<a href='+data.tweet[i].tweet_URL+' target="_blank" class="btn btn-outline-primary ">'+
-                            '<i class="glyphicon glyphicon-floppy-disk" aria-hidden="true">Original Tweet</i>'+
-                        '</a>'+
-                    '</div>'+
-                    '<p class="d-inline font-weight-light text-warning float-right"> '+data.tweet[i].Agency+'</p>'+
-                    '<p class="d-inline font-weight-light text-secondary float-right"> - </p>'+
-                    '<p class="d-inline font-weight-light text-danger float-right"> '+data.tweet[i].Job+'</p>'+
-                  '</li>'
-                  )
-                }
+                  $("#tweets").append(
+                    '<li class="list-group-item mx-auto" style="width: 1000px;">'+
+                        '<p class=" d-inline font-weight-bold"  >'+data.tweet[i].Name+'</p>'+
+                        '<p class="d-inline font-weight-light text-primary"> '+data.tweet[i].Twitter_Handle+'</p>'+
+                        '<p class="d-inline font-weight-light text-success float-right">'+data.tweet[i].Date+'</p>'+
+                      '<p >'+data.tweet[i].Tweet+'</p>'+
+                      '<div class="btn-group">'+
+                          '<a href='+data.tweet[i].tweet_URL+' target="_blank" class="btn btn-outline-primary ">'+
+                              '<i class="glyphicon glyphicon-floppy-disk" aria-hidden="true">Original Tweet</i>'+
+                          '</a>'+
+                      '</div>'+
+                      '<p class="d-inline font-weight-light text-warning float-right"> '+data.tweet[i].Agency+'</p>'+
+                      '<p class="d-inline font-weight-light text-secondary float-right"> - </p>'+
+                      '<p class="d-inline font-weight-light text-danger float-right"> '+data.tweet[i].Job+'</p>'+
+                    '</li>'
+                    )
+                  }
 
                 } if(data.status === "Error") {
                   $("#error").html('<h1 class = "errorMsg">'+data.message+'</h1>')
@@ -174,7 +173,7 @@
           </div>
           <div class="row"><p></p></div>
           <div class="row"><p></p></div>
-
+          <div id="loading-div"> </div>
           <div id="tweet-results">
             <ul id="tweets" class="list-group"></ul>
           </div>
