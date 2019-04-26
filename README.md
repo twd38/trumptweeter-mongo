@@ -7,4 +7,4 @@ With TrumpTweeter, you can bulk search topics through a curated database of trum
 This fullstack web app was initially designed and built over the course of a two day hackathon called Tech, Media and Democracy. After the hackathon, I spend a number of weeks fixing bugs, improving the UX and increasing the overall quality of the app.
 
 ## Demo
-![TrumpTweeter Demo](img/trump-tweeter-screengrab.gif)
+![TrumpTweeter Demo](img/trump-tweeter-screengrab)
